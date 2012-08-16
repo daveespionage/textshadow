@@ -84,13 +84,27 @@
       }      
 
       // for the jquery text-shadow plugin
-      .ui-text-shadow-copy-#{$i} {
-        color: $color;
-        filter: if( $opacity < 100, unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity})"), unquote("") )
-          if( $blur-radius > 0, unquote("progid:DXImageTransform.Microsoft.Blur(makeShadow=false,pixelRadius=#{$blur-radius})"), unquote("") );
-        left: $offset-x - $blur-radius;
-        top: $offset-y - $blur-radius;
+      //  .ui-text-shadow-copy-#{$i} {
+      //   color: $color;
+      //   filter: if( $opacity < 100, unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$opacity})"), unquote("") )
+      //     if( $blur-radius > 0, unquote("progid:DXImageTransform.Microsoft.Blur(makeShadow=false,pixelRadius=#{$blur-radius})"), unquote("") );
+      //   left: $offset-x - $blur-radius;
+      //   top: $offset-y - $blur-radius;
+      // } 
+
+      $ie-hex-str: ie-hex-str($color);
+      $direction: 135;
+      @if $offset-x <= 0px and $offset-y <= 0px{
+        $direction: 270;
       }
+      @if $offset-x <= 0px and $offset-y > 0px{
+        $direction: 225;
+      }
+      @if $offset-x > 0px and $offset-y <= 0px{
+        $direction: 45;
+      }
+      filter: progid:DXImageTransform.Microsoft.DropShadow(color=#{$ie-hex-str},offX=#{$offset-x},offY=#{$offset-y}) 
+              progid:DXImageTransform.Microsoft.Shadow(color=#{$ie-hex-str},direction=#{$direction},strength=#{$blur-radius});
       $i: $i + 1;
     }
   }
